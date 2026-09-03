@@ -109,6 +109,63 @@ class TestNoLeftoverBranding:
         assert not failures, f"Pages with stub/placeholder strings: {failures[:15]}"
 
 
+class TestSkipLink:
+    def test_every_page_has_skip_link_first_and_main_target(self, parsed_pages):
+        """Every page's first <body> element is a skip link pointing at an
+        existing <main id="main-content">."""
+        failures = []
+        for path, _, soup in parsed_pages:
+            body = soup.body
+            first = body.find(True) if body else None
+            if not first or first.name != "a" or first.get("href") != "#main-content":
+                failures.append(f"{_rel(path)}: first body element is not the skip link")
+            if not soup.select_one("main#main-content"):
+                failures.append(f"{_rel(path)}: no main#main-content")
+        assert not failures, f"Skip-link issues: {failures[:15]}"
+
+
+class TestFavicon:
+    def test_every_page_links_a_resolvable_favicon(self, parsed_pages):
+        """Every page must have a <link rel="icon"> whose href resolves to a file."""
+        failures = []
+        for path, _, soup in parsed_pages:
+            icons = soup.find_all("link", rel="icon")
+            if not icons:
+                failures.append(f"{_rel(path)}: no favicon link")
+                continue
+            href = icons[0].get("href", "")
+            target = (path.parent / href).resolve()
+            if not target.exists():
+                failures.append(f"{_rel(path)}: favicon href '{href}' does not resolve")
+        assert not failures, f"Favicon issues: {failures[:15]}"
+
+
+class TestMetaDescription:
+    def test_every_page_has_one_meaningful_meta_description(self, parsed_pages):
+        """Every page must have exactly one non-empty <meta name="description">
+        with content between 50 and 200 characters."""
+        failures = []
+        for path, _, soup in parsed_pages:
+            tags = soup.find_all("meta", attrs={"name": "description"})
+            if len(tags) != 1:
+                failures.append(f"{_rel(path)}: found {len(tags)} description tags")
+                continue
+            content = (tags[0].get("content") or "").strip()
+            if not (50 <= len(content) <= 200):
+                failures.append(f"{_rel(path)}: description length {len(content)}")
+        assert not failures, f"Meta description issues: {failures[:15]}"
+
+    def test_meta_descriptions_are_unique(self, parsed_pages):
+        """No two pages may share the same meta description."""
+        seen = {}
+        for path, _, soup in parsed_pages:
+            tag = soup.find("meta", attrs={"name": "description"})
+            content = (tag.get("content") or "").strip() if tag else ""
+            if content and content in seen:
+                assert False, f"{_rel(path)} duplicates description of {seen[content]}"
+            seen[content] = _rel(path)
+
+
 class TestContentNotEmpty:
     def test_page_content_has_minimum_text(self, parsed_pages):
         """Every page's .page-content div must have at least 20 characters of stripped text."""

@@ -1,15 +1,17 @@
 ## INTRODUCTION
 
-This week we will use our newly configured laptops to explore:
+Week 1 has a single session (Thursday). The fall semester begins on Thursday,
+August 27, so there is no Tuesday class this week.
 
-* terminal command line interface (CLI)
-* Claude Code CLI integrated development environment (IDE)
-* Microsoft Visual Studio Code (VSCode)
-* GitHub.com and local CLI apps "git" and "gh"
+This week introduces the course and the 2026 AI landscape, moving from
+API-coding to agentic harness engineering. We set up the required accounts and
+tools (Claude Code, GitHub, and WSL2 for Windows users) and establish secrets
+hygiene from day one.
 
-We will also introduce Mini-Project #1: Redesigning a Website by applying some of the concepts we learn in class. 
+This is part of Mini-Project 1 — Development Environment Configuration
+(Weeks 1&ndash;2).
 
-## TUESDAY (Sep 1, 2026)
+## THURSDAY (Aug 27, 2026)
 
 ### READINGS
 
@@ -19,25 +21,6 @@ We will also introduce Mini-Project #1: Redesigning a Website by applying some o
 
 * self-guided manual "Development Environment Configuration"
 
+### NOTES
 
-## THURSDAY (Sep 3, 2026)
-
-### arXiv.org PRESENTATIONS
-
-* Pablo
-
-### READINGS
-
-* [Zitron: Everyone Has Been Sold a Lie" on AI](https://www.youtube.com/watch?v=pHcZpvIfho0)
-
-* [How accurate have Ed Zitron's AI skeptic predictions been?](https://danluu.com/zitron/)
-
-### CODING
-
-* self-guided manual "Mini-Project #1: Redesigning a Website"
-
-* DataCamp.com: [Unix Bash Shell Cheat Sheet](https://www.datacamp.com/cheat-sheet/bash-and-zsh-shell-terminal-basics-cheat-sheet)
-
-* DataCamp.com: [Introduction to Git](https://app.datacamp.com/learn/courses/introduction-to-git)
-
-* DataCamp.com: [Intermediate Git](https://app.datacamp.com/learn/courses/intermediate-git)
+* Lightning Presentation sign-ups open Tuesday, September 1.

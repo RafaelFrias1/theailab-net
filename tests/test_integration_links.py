@@ -72,6 +72,67 @@ class TestNavConsistency:
         assert not broken, f"Broken nav links: {broken[:15]}"
 
 
+class TestNavMarkupIdentical:
+    def test_nav_html_identical_across_content_pages(self, site_root, nav_pages):
+        """With the active markers and depth-prefix stripped, the primary nav
+        markup must be byte-identical across every content page."""
+        norm = {}
+        for f in nav_pages:
+            soup = BeautifulSoup(f.read_text(encoding="utf-8"), "lxml")
+            nav = soup.select_one("nav.main-nav")
+            html = str(nav)
+            html = html.replace(' class="active"', "").replace(' aria-current="page"', "")
+            html = html.replace("../", "").replace('href="core/', 'href="')
+            norm[_rel(f)] = html
+        distinct = set(norm.values())
+        assert len(distinct) == 1, (
+            "Nav markup differs across pages:\n"
+            + "\n".join(f"{k}: {v}" for k, v in norm.items())
+        )
+
+
+class TestActiveNav:
+    def test_exactly_one_active_link_with_aria_current(self, site_root, nav_pages):
+        """On every content page, exactly one nav link is class="active", that
+        link also carries aria-current="page", and no other nav link does."""
+        failures = []
+        for f in nav_pages:
+            soup = BeautifulSoup(f.read_text(encoding="utf-8"), "lxml")
+            nav = soup.select_one("nav.main-nav")
+            links = nav.find_all("a") if nav else []
+            active = [a for a in links if "active" in (a.get("class") or [])]
+            aria = [a for a in links if a.get("aria-current") == "page"]
+            if len(active) != 1:
+                failures.append(f"{_rel(f)}: {len(active)} active links")
+            elif active != aria:
+                failures.append(f"{_rel(f)}: active link and aria-current link differ")
+        assert not failures, f"Active-nav issues: {failures[:15]}"
+
+
+class TestScheduleLinkTextMatchesTarget:
+    def test_week_link_text_equals_target_hero_h1(self, site_root):
+        """Each week link in schedule.html must have visible text equal to the
+        target week page's hero <h1>."""
+        schedule = site_root / "core" / "schedule.html"
+        soup = BeautifulSoup(schedule.read_text(encoding="utf-8"), "lxml")
+        failures = []
+        for a in soup.find_all("a", href=True):
+            href = a["href"]
+            if "week-" not in href or not href.endswith(".html"):
+                continue
+            target = (schedule.parent / href).resolve()
+            if not target.exists():
+                failures.append(f"{href}: target missing")
+                continue
+            tsoup = BeautifulSoup(target.read_text(encoding="utf-8"), "lxml")
+            h1 = tsoup.select_one("section.hero h1")
+            h1_text = h1.get_text(strip=True) if h1 else ""
+            link_text = a.get_text(strip=True)
+            if link_text != h1_text:
+                failures.append(f"{href}: link text '{link_text}' != hero h1 '{h1_text}'")
+        assert not failures, "Schedule link/title mismatches:\n" + "\n".join(failures)
+
+
 class TestScheduleLinksAllWeeks:
     def test_schedule_links_to_all_15_weeks(self, site_root):
         """core/schedule.html must link to weeks/week-01.html through weeks/week-15.html."""
