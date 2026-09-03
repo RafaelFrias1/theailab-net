@@ -44,6 +44,19 @@ class TestAllInternalLinks:
         assert not broken, f"{len(broken)} broken internal links. First 15: {broken[:15]}"
 
 
+class TestExternalLinkRel:
+    def test_external_anchors_have_noopener(self, parsed_pages):
+        """Every <a> with an http(s) href must carry rel="noopener"."""
+        failures = []
+        for path, _, soup in parsed_pages:
+            for a in soup.find_all("a", href=True):
+                if a["href"].startswith(("http://", "https://")):
+                    rel = " ".join(a.get("rel", []))
+                    if "noopener" not in rel:
+                        failures.append(f"{_rel(path)} -> {a['href']}")
+        assert not failures, f"External links without rel=noopener: {failures[:15]}"
+
+
 class TestNavConsistency:
     def test_all_nav_pages_have_identical_nav_labels(self, site_root, nav_pages):
         """Every page (except 404.html) must have the exact same set of nav link labels."""
@@ -84,6 +97,10 @@ class TestNavMarkupIdentical:
             html = html.replace(' class="active"', "").replace(' aria-current="page"', "")
             html = html.replace("../", "").replace('href="core/', 'href="')
             norm[_rel(f)] = html
+        for f in nav_pages:
+            soup = BeautifulSoup(f.read_text(encoding="utf-8"), "lxml")
+            nav = soup.select_one("nav.main-nav")
+            assert nav and nav.get("aria-label"), f"{_rel(f)}: nav missing aria-label"
         distinct = set(norm.values())
         assert len(distinct) == 1, (
             "Nav markup differs across pages:\n"

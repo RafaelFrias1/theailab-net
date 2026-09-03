@@ -1,57 +1,42 @@
-"""Content-source tests: Markdown week outlines must agree with their HTML pages.
+"""Content-consistency tests: a page's hero <h1> must agree with its <title>
+and, where present, the final breadcrumb segment.
 
-Only weeks that ship a `.md` source are checked. The `.html` files are the
-source of truth for the rendered site; these tests guard against a `.md`
-outline drifting away from (or being a stale copy of another week's) content.
+The `weeks/*.html` files are the hand-maintained source of truth for the site
+(there are no Markdown sources). These checks guard against the title / hero /
+breadcrumb drifting apart when a page is edited.
 """
-import re
 from pathlib import Path
+from bs4 import BeautifulSoup
 
 SITE_ROOT = Path(__file__).parent.parent
-WEEKS_DIR = SITE_ROOT / "weeks"
-
-# Distinctive strings that must appear in a given week's HTML *and* its .md,
-# and must NOT appear in the other weeks' .md files (catches copy-paste bleed).
-WEEK_MARKERS = {
-    "week-01": {"must_contain": ["August 27", "Aug 27"], "must_not_contain": ["September 1 & 3", "Sep 1", "Sep 3"]},
-    "week-02": {"must_contain": ["September 1", "Sep 1"], "must_not_contain": ["August 27", "Aug 27"]},
-}
 
 
-def _md_files():
-    return sorted(WEEKS_DIR.glob("week-*.md"))
+def _rel(p):
+    return str(p.relative_to(SITE_ROOT))
 
 
-class TestMarkdownSourcesMatchHtml:
-    def test_each_md_week_agrees_with_its_html(self):
+class TestHeroTitleBreadcrumbAgree:
+    def test_h1_matches_title_and_breadcrumb(self, parsed_pages):
         failures = []
-        for md in _md_files():
-            stem = md.stem  # e.g. "week-01"
-            if stem not in WEEK_MARKERS:
+        for path, _, soup in parsed_pages:
+            h1 = soup.select_one("section.hero h1")
+            if not h1:
                 continue
-            html = WEEKS_DIR / f"{stem}.html"
-            if not html.exists():
-                failures.append(f"{stem}.md has no matching {stem}.html")
-                continue
-            md_text = md.read_text(encoding="utf-8")
-            markers = WEEK_MARKERS[stem]
-            if not any(s in md_text for s in markers["must_contain"]):
+            h1_text = h1.get_text(strip=True)
+            title = soup.title.string.strip() if soup.title and soup.title.string else ""
+            if not title.startswith(h1_text):
+                failures.append(f"{_rel(path)}: <title> does not start with h1 '{h1_text}'")
+            crumb = soup.select_one(".breadcrumbs span")
+            if crumb and crumb.get_text(strip=True) != h1_text:
                 failures.append(
-                    f"{stem}.md is missing any of {markers['must_contain']}"
+                    f"{_rel(path)}: breadcrumb '{crumb.get_text(strip=True)}' != h1 '{h1_text}'"
                 )
-            bad = [s for s in markers["must_not_contain"] if s in md_text]
-            if bad:
-                failures.append(f"{stem}.md unexpectedly contains {bad} (wrong week's content?)")
-        assert not failures, "Markdown source mismatches:\n" + "\n".join(failures)
+        assert not failures, "Hero/title/breadcrumb mismatches:\n" + "\n".join(failures)
 
-    def test_no_two_md_files_are_near_duplicates(self):
-        """No two week .md files may share their INTRODUCTION paragraph verbatim."""
-        intros = {}
-        for md in _md_files():
-            text = md.read_text(encoding="utf-8")
-            m = re.search(r"##\s*INTRODUCTION\s*\n(.+?)(?=\n##\s)", text, re.S | re.I)
-            intro = re.sub(r"\s+", " ", m.group(1)).strip() if m else ""
-            if intro and intro in intros.values():
-                other = [k for k, v in intros.items() if v == intro][0]
-                assert False, f"{md.name} has the same INTRODUCTION as {other}"
-            intros[md.name] = intro
+
+class TestNoMarkdownSources:
+    def test_weeks_dir_has_no_stale_markdown(self):
+        """weeks/ holds only .html files — the HTML is canonical, no partial
+        Markdown outlines that could be regenerated over correct pages."""
+        stray = sorted(p.name for p in (SITE_ROOT / "weeks").glob("*.md"))
+        assert not stray, f"Unexpected Markdown in weeks/: {stray}"

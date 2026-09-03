@@ -58,6 +58,40 @@ class TestWeeksDirectoryContents:
         )
 
 
+class TestRobots:
+    def test_robots_txt_exists_and_allows_crawling(self, site_root):
+        robots = site_root / "robots.txt"
+        assert robots.exists(), "robots.txt missing"
+        text = robots.read_text()
+        assert "User-agent: *" in text
+        assert "Allow: /" in text or "Disallow:" in text
+
+
+class TestRepoHygiene:
+    def test_no_cruft_files_tracked(self, site_root):
+        """.DS_Store, editor cruft, saved agent transcripts, and stray copies
+        must not be tracked in git."""
+        import subprocess
+        tracked = subprocess.run(
+            ["git", "ls-files"], cwd=site_root, capture_output=True, text=True, check=True
+        ).stdout.splitlines()
+        bad = [
+            f for f in tracked
+            if f.endswith(".DS_Store")
+            or f.startswith("notes/")
+            or f == "docs/r"
+            or (f.endswith(".txt") and "requirements" not in f and f.count("/") == 0)
+        ]
+        assert not bad, f"Cruft files tracked in git: {bad}"
+
+    def test_gitignore_is_not_the_python_app_template(self, site_root):
+        """The trimmed .gitignore should not carry framework boilerplate for
+        frameworks this repo does not use."""
+        text = (site_root / ".gitignore").read_text()
+        for token in ("Django", "Flask", "Scrapy", "PyBuilder", "marimo", "Streamlit"):
+            assert token not in text, f".gitignore still mentions {token}"
+
+
 class TestReachability:
     def test_all_pages_except_404_reachable_from_index(self, site_root, all_html_files):
         """BFS from index.html over local <a href> links must reach every page except 404.html."""

@@ -166,6 +166,17 @@ class TestMetaDescription:
             seen[content] = _rel(path)
 
 
+class TestTableHeaders:
+    def test_every_th_has_a_scope(self, parsed_pages):
+        """Every <th> in the site must declare scope="col" or scope="row"."""
+        failures = []
+        for path, _, soup in parsed_pages:
+            for th in soup.find_all("th"):
+                if th.get("scope") not in ("col", "row"):
+                    failures.append(f"{_rel(path)}: <th>{th.get_text(strip=True)[:20]}</th>")
+        assert not failures, f"<th> missing scope: {failures[:20]}"
+
+
 class TestContentNotEmpty:
     def test_page_content_has_minimum_text(self, parsed_pages):
         """Every page's .page-content div must have at least 20 characters of stripped text."""

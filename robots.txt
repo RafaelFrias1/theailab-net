@@ -1,0 +1,7 @@
+# IPHS 400: Frontiers in AI — course website
+# All pages are public and indexable.
+User-agent: *
+Allow: /
+
+# Add once a canonical public URL is chosen:
+# Sitemap: https://EXAMPLE/sitemap.xml

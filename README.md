@@ -23,13 +23,14 @@ on Moodle.
 │   ├── assignments.html
 │   ├── policies.html
 │   └── about.html
-├── weeks/                   # One page per week, week-01.html … week-15.html
+├── weeks/                   # One page per week, week-01.html … week-15.html (hand-maintained; the HTML is the source of truth)
 ├── css/
 │   └── style.css            # Single shared stylesheet, no build step
 ├── tests/                   # pytest suite validating the site
 │   ├── conftest.py
 │   ├── test_unit_html_structure.py
 │   ├── test_integration_links.py
+│   ├── test_content_sources.py
 │   ├── test_e2e_site.py
 │   └── requirements.txt
 └── docs/                    # Project reports, tech-specs, and manuals
