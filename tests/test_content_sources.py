@@ -34,6 +34,18 @@ class TestHeroTitleBreadcrumbAgree:
         assert not failures, "Hero/title/breadcrumb mismatches:\n" + "\n".join(failures)
 
 
+class TestLastUpdatedIndicator:
+    def test_syllabus_and_schedule_show_last_updated(self):
+        import re as _re
+        for name in ("core/syllabus.html", "core/schedule.html"):
+            soup = BeautifulSoup((SITE_ROOT / name).read_text(), "lxml")
+            meta = soup.select_one(".page-meta")
+            assert meta, f"{name}: no .page-meta element"
+            assert _re.search(r"Last updated:\s*\d{4}-\d{2}-\d{2}", meta.get_text()), (
+                f"{name}: .page-meta has no ISO date"
+            )
+
+
 class TestNoMarkdownSources:
     def test_weeks_dir_has_no_stale_markdown(self):
         """weeks/ holds only .html files — the HTML is canonical, no partial

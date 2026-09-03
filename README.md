@@ -55,16 +55,27 @@ view the site — only the test suite has dependencies.
 
 ## Running the Tests
 
-The test suite (pytest + BeautifulSoup/lxml) validates structural and content
-integrity of every page:
+The test suite (pytest + BeautifulSoup/lxml/html5lib) validates structural and
+content integrity of every page:
 
-- `test_unit_html_structure.py` — every page has a DOCTYPE, title, stylesheet
-  link, header, footer, and hero `<h1>`; no leftover template branding; no
-  placeholder or stub content
-- `test_integration_links.py` — every internal link resolves; navigation is
-  identical across all pages; the schedule links to all 15 week pages
+- `test_unit_html_structure.py` — every page has a DOCTYPE, title, meta
+  description, favicon, stylesheet link, skip link, header, footer with
+  source/license links, and hero `<h1>`; every `<th>` has a `scope`; no
+  leftover template branding or stub content; the home page carries valid
+  `Course` JSON-LD
+- `test_integration_links.py` — every internal link resolves; nav markup is
+  identical across all pages; the active link carries `aria-current="page"`;
+  the schedule links to all 15 weeks and its link text matches each week's
+  `<h1>`; external links carry `rel="noopener"`
+- `test_unit_css.py` — no dead class selectors; no phantom font names or
+  duplicate tokens; `:focus-visible` and print rules present
+- `test_content_sources.py` — hero/`<title>`/breadcrumb agree; syllabus and
+  schedule show a "Last updated" date; no stale Markdown in `weeks/`
 - `test_e2e_site.py` — required files/directories exist; exact page count;
-  every page is reachable from `index.html` (no orphaned pages)
+  `robots.txt` present; no cruft tracked in git; every page reachable from
+  `index.html`
+- `test_html_valid.py` — every page parses under html5lib strict mode with no
+  duplicate ids
 
 ```bash
 python3 -m venv .venv

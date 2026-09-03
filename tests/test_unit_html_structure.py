@@ -69,6 +69,18 @@ class TestHeaderFooterHero:
                 failures.append(f"{_rel(path)}: footer text mismatch")
         assert not failures, f"Footer issues: {failures[:15]}"
 
+    def test_all_footers_have_source_and_license_links(self, parsed_pages):
+        """Every footer must link to the repo source and the license."""
+        failures = []
+        for path, _, soup in parsed_pages:
+            footer = soup.select_one("footer.site-footer")
+            hrefs = [a.get("href", "") for a in footer.find_all("a")] if footer else []
+            if not any("github.com/jon-chun/theailab-net" in h for h in hrefs):
+                failures.append(f"{_rel(path)}: no source link")
+            if not any("LICENSE" in h for h in hrefs):
+                failures.append(f"{_rel(path)}: no license link")
+        assert not failures, f"Footer link issues: {failures[:15]}"
+
     def test_all_pages_have_hero_with_h1(self, parsed_pages):
         """Every page must have a <section class="hero"> containing an <h1>."""
         failures = []
@@ -175,6 +187,17 @@ class TestTableHeaders:
                 if th.get("scope") not in ("col", "row"):
                     failures.append(f"{_rel(path)}: <th>{th.get_text(strip=True)[:20]}</th>")
         assert not failures, f"<th> missing scope: {failures[:20]}"
+
+
+class TestStructuredData:
+    def test_home_has_valid_course_jsonld(self, parsed_pages):
+        import json
+        soup = next(s for p, _, s in parsed_pages if p.name == "index.html")
+        block = soup.find("script", attrs={"type": "application/ld+json"})
+        assert block, "index.html has no JSON-LD block"
+        data = json.loads(block.string)
+        assert data.get("@type") == "Course"
+        assert data.get("name") and data.get("description") and data.get("provider")
 
 
 class TestContentNotEmpty:

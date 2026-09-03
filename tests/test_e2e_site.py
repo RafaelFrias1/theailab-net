@@ -1,4 +1,5 @@
 """End-to-end tests: site completeness, page counts, and reachability."""
+import re
 import pytest
 from urllib.parse import unquote
 from pathlib import Path
@@ -80,7 +81,7 @@ class TestRepoHygiene:
             if f.endswith(".DS_Store")
             or f.startswith("notes/")
             or f == "docs/r"
-            or (f.endswith(".txt") and "requirements" not in f and f.count("/") == 0)
+            or re.match(r"\d{4}-\d{2}-\d{2}-\d+.*\.txt$", f)  # saved agent transcript
         ]
         assert not bad, f"Cruft files tracked in git: {bad}"
 
