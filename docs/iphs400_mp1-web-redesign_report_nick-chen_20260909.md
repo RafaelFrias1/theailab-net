@@ -10,9 +10,9 @@
 
 * This phase are some essential changes for the website to fulfill the requirements that a website that have
 
-* Added favicons and <meta name="description"> to all 22 pages to aviod affecting SEO and link-preview cards
+* Added favicons and `<meta name="description">` to all 22 pages to aviod affecting SEO and link-preview cards
 * Added a link of "skip to content" for accessibility
-* Added a .table-wrap (overflow-x: auto) to all <table> to aviod wide tables break the layout on mobile phone
+* Added a .table-wrap (overflow-x: auto) to all `<table>` to aviod wide tables break the layout on mobile phone
 * Removed approximately 150 lines of dead code from the original WordPress theme port such as blog-post cards or social-share buttons
 * Built a pytest test suite that checksthe consistency and structural integrity of all pages that re-run after every changes to prevent from conflicts between changes and previous contents
 
@@ -41,7 +41,7 @@
 * Also through CSS, added the View Transitions API for smooth crossfade transitions between page navigations that are native in the browser.
 
 ## Homepage background animation
-* Added a <canvas>-based particle/line animation background on the homepage by HTML, which is basically a sunburst of rays radiating from on point and eases toward the cursor on mouse movement, rotates as users scroll, and reshuffles into a new pattern on click. Each ray will have its color independently that cycling from the site's existing palette. I get the inspiration from "Stripe.com", they have some really beautiful animation design on their webpage. I only added this animation on the home page, because I wish other sections to be material-focused.
+* Added a `<canvas>`-based particle/line animation background on the homepage by HTML, which is basically a sunburst of rays radiating from on point and eases toward the cursor on mouse movement, rotates as users scroll, and reshuffles into a new pattern on click. Each ray will have its color independently that cycling from the site's existing palette. I get the inspiration from "Stripe.com", they have some really beautiful animation design on their webpage. I only added this animation on the home page, because I wish other sections to be material-focused.
 * The cards ("map", "Today in AI", and "Go to this week")on the homepage use a "frosted glass" effect (CSS backdrop-filter: blur()), which makes the cards more integrated to the background especially when users scrolling through them over the animation background. 
 
 
