@@ -4,38 +4,83 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1.0" name="viewport"/>
-<title>Week 3: Anatomy of an AI Coding Agent – IPHS 400: Frontiers in AI</title>
+<title>Week 3: Dive into Claude Code CLI – IPHS 400: Frontiers in AI</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Newsreader:ital,wght@0,400;0,500;1,400&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet"/>
+<script src="../js/theme-init.js"></script>
 <link href="../css/style.css" rel="stylesheet"/>
+<link href="../favicon.svg" rel="icon" type="image/svg+xml"/>
+<meta content="Week 3: A deeper dive into Claude Code CLI via Anthropic Academy coursework, VS Code basics, and the herdr terminal app for parallelized agent workflows." name="description"/>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header no-featured-image">
 <div class="header-inner">
 <div class="site-branding"><p class="site-title"><a href="../index.html">IPHS 400: Frontiers in AI</a></p><span class="site-sep">—</span><p class="site-description">Kenyon College — Fall 2026</p></div>
 <nav class="main-nav"><ul>
 <li><a href="../index.html">Home</a></li>
 <li><a href="../core/syllabus.html">Syllabus</a></li>
-<li><a href="../core/schedule.html" class="active">Schedule</a></li>
 <li><a href="../core/assignments.html">Assignments</a></li>
 <li><a href="../core/policies.html">Policies</a></li>
 <li><a href="../core/about.html">About</a></li>
-</ul></nav>
+<li class="theme-controls"><button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark mode"><svg class="icon-sun" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4" fill="currentColor" stroke="none"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg><svg class="icon-moon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button><button id="theme-lock" class="theme-lock" type="button" hidden="" aria-label="Lock theme"><svg class="icon-unlocked" viewBox="0 0 24 24" width="13" height="13" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 9-3"/></svg><svg class="icon-locked" viewBox="0 0 24 24" width="13" height="13" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></button></li></ul></nav>
 </div>
-<section class="hero"><h1>Week 3: Anatomy of an AI Coding Agent</h1></section></header>
+<section class="hero"><h1>Week 3: Dive into Claude Code CLI</h1></section></header>
 
-<main class="content-wrapper">
-<div class="breadcrumbs"><a href="../index.html">Home</a> » <a href="../core/schedule.html">Schedule</a> » <span>Week 3: Anatomy of an AI Coding Agent</span></div>
+<main class="content-wrapper has-rail" id="main">
+<div class="page-main">
+<div class="breadcrumbs"><a href="../index.html">Home</a> » <a href="../core/schedule.html">Schedule</a> » <span>Week 3: Dive into Claude Code CLI</span></div>
 <div class="page-content">
 
+<div class="session-meta">
 <p><strong>Tuesday &amp; Thursday, September 8 &amp; 10</strong></p>
-<p>Part of <a href="../core/assignments.html">Mini-Project 2 &mdash; AI Coding Agent Configuration</a> (Weeks 3&ndash;5).</p>
-<p>Anatomy of an AI coding agent; prompt engineering vs. context engineering; introduction to the Claude Code CLI.</p>
-<p><strong>Ethics thread:</strong> what changes when the &ldquo;user&rdquo; of a tool is an agent: labor, deskilling, and accountability.</p>
+<p><span class="mp-dot" style="background:var(--mp2)"></span>Part of <a href="../core/assignments.html">Mini-Project 2 &mdash; AI Coding Agent Configuration</a> (Weeks 3&ndash;5).</p>
+</div>
+<p>Now that we have a common configuration and development platform with Mini-Project #1 underway, we begin to dive a little deeper into the internal and external functionalities of Claude Code CLI. This week you&rsquo;ll work through a curated list of Anthropic Academy&rsquo;s own coursework. In addition, for those new to it, we review VS Code basics. Finally, we&rsquo;ll learn a bit more about the latest and greatest tmux terminal app &ldquo;herdr&rdquo; and how it facilitates scalable parallelized and automated AI workflows.</p>
+<aside class="ethics-thread">
+<span class="ethics-label">Discuss &mdash; Ethics Thread</span>
+<p>what changes when the &ldquo;user&rdquo; of a tool is an agent: labor, deskilling, and accountability.</p>
+</aside>
+
+<h3>Tuesday, September 8</h3>
+<h4>Readings</h4>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=0Rp9KJCEIvg">The most interesting hack in history just got weirder&hellip; (6:45) (2 Sep 2026)</a></li>
+<li><a href="https://www.youtube.com/watch?v=CDokUdux0rc">AI regulation is coming&hellip; (4:13) (2023)</a></li>
+</ul>
+<h4>Coding</h4>
+<ul>
+<li><a href="https://academy.claude.com/courses/claude-platform-101">Claude Platform 101 (Anthropic) (1.5hr)</a></li>
+<li><a href="https://academy.claude.com/courses/claude-code-in-action">Claude Code in Action (Anthropic) (1hr)</a></li>
+<li><a href="https://www.youtube.com/watch?v=lWEKiak0WVU">VS Code for Absolute Beginners | 2026 (48:27) (Jan 2026)</a></li>
+<li><a href="https://www.youtube.com/watch?v=2CR9tDNAzB0&amp;t=20s">herdr is a must use (9:18) (Aug 2026)</a></li>
+</ul>
+
+<h3>Thursday, September 10</h3>
+<h4>Coding</h4>
+<ul>
+<li><a href="https://academy.claude.com/courses/introduction-to-agent-skills">Introduction to agent skills (Anthropic) (1hr)</a></li>
+<li><a href="https://academy.claude.com/courses/introduction-to-subagents">Introduction to subagents (Anthropic) (45mins)</a></li>
+<li><a href="https://academy.claude.com/courses/ai-native-sdlc-playbook">The AI-Native SDLC Playbook (Anthropic) (1hr)</a></li>
+</ul>
 
 <p><a href="../core/schedule.html">&larr; Back to Schedule</a> | <a href="week-02.html">&laquo; Week 2</a> | <a href="week-04.html">Week 4 &raquo;</a></p>
 </div>
+</div>
+
+<aside class="page-rail">
+<div class="news-card" id="today-in-ai-card" hidden=""></div>
+<div class="here-card" id="here-card" hidden=""></div>
+</aside>
 </main>
 <footer class="site-footer">
 <p>IPHS 400: Frontiers in AI · Kenyon College</p>
 </footer>
+<script src="../js/course-calendar.js"></script>
+<script src="../js/this-week-card.js"></script>
+<script src="../js/nav-wave.js"></script>
+<script src="../js/today-in-ai.js"></script>
+<script src="../js/theme.js"></script>
 </body>
 </html>

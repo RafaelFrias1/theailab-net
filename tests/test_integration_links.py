@@ -6,7 +6,7 @@ from urllib.parse import unquote
 
 SITE_ROOT = Path(__file__).parent.parent
 
-EXPECTED_NAV_LABELS = {"Home", "Syllabus", "Schedule", "Assignments", "Policies", "About"}
+EXPECTED_NAV_LABELS = {"Home", "Syllabus", "Assignments", "Policies", "About"}
 
 
 def _rel(path):
@@ -70,6 +70,27 @@ class TestNavConsistency:
             for link in _collect_broken_links(f, nav, "a"):
                 broken.append(f"{_rel(f)} -> {link}")
         assert not broken, f"Broken nav links: {broken[:15]}"
+
+
+class TestJourneyMap:
+    def test_homepage_map_links_to_all_15_weeks(self, site_root):
+        """index.html's #journey-map must link to all 15 week pages."""
+        index = site_root / "index.html"
+        soup = BeautifulSoup(index.read_text(encoding="utf-8"), "lxml")
+        svg = soup.select_one("#journey-map")
+        assert svg is not None, "index.html is missing #journey-map"
+        hrefs = {a.get("href", "") for a in svg.find_all("a")}
+        missing = [n for n in range(1, 16) if f"weeks/week-{n:02d}.html" not in hrefs]
+        assert not missing, f"#journey-map missing links to weeks: {missing}"
+
+    def test_homepage_has_no_nav_duplicating_link_list(self, site_root):
+        """index.html must not repeat the top-nav links as a separate Quick Links list."""
+        index = site_root / "index.html"
+        soup = BeautifulSoup(index.read_text(encoding="utf-8"), "lxml")
+        content = soup.select_one(".page-content")
+        assert content is not None
+        item_list = content.select_one(".item-list")
+        assert item_list is None, "index.html still has a Quick Links-style .item-list duplicating the nav"
 
 
 class TestScheduleLinksAllWeeks:

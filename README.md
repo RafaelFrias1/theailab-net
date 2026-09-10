@@ -10,7 +10,6 @@ on Moodle.
 
 - **Instructor:** Jon Chun
 - **Schedule:** Tu/Th, 2:40–4:00 PM · Timberlake #5 (Evans Conference Room)
-- **Live site:** _add Netlify URL here once deployed_
 
 ## Repository Structure
 
@@ -33,7 +32,6 @@ on Moodle.
 │   ├── test_integration_links.py
 │   ├── test_e2e_site.py
 │   └── requirements.txt
-└── .github/workflows/       # CI: deploy to Netlify on push to main
 ```
 
 The site is static HTML/CSS with no build step or JS framework. Every page
@@ -41,12 +39,18 @@ shares one stylesheet and a common header/nav/hero/footer skeleton.
 
 ## Local Development
 
-Serve the site locally with Python's built-in HTTP server:
+Serve the site locally with the bundled no-cache dev server (recommended —
+plain `python3 -m http.server` sends no `Cache-Control` header at all, which
+lets the browser silently keep serving a stale `css/style.css` or `js/*.js`
+after an edit, even on a normal refresh):
 
 ```bash
-python3 -m http.server 8080
+python3 scripts/serve.py 8080
 # then open http://localhost:8080/
 ```
+
+Plain `python3 -m http.server 8080` still works if you don't mind
+hard-refreshing (Cmd/Ctrl+Shift+R) after every change.
 
 No install step is required to view the site — only the test suite has
 dependencies.
@@ -77,22 +81,6 @@ Run a single test file or test:
 pytest tests/test_unit_html_structure.py -v
 pytest tests/test_integration_links.py::TestNavConsistency::test_nav_links_resolve -v
 ```
-
-## Deployment
-
-The site deploys to Netlify automatically on every push to `main` via
-[`.github/workflows/deploy-netlify.yml`](.github/workflows/deploy-netlify.yml).
-The workflow publishes the repository root and requires two repository
-secrets, set under **Settings → Secrets and variables → Actions**:
-
-| Secret | Description |
-|---|---|
-| `NETLIFY_AUTH_TOKEN` | A Netlify personal access token |
-| `NETLIFY_SITE_ID` | The target Netlify site's API ID |
-
-Until those secrets are configured, the workflow run will fail at the deploy
-step — everything else (checkout) will still succeed. Deployment can also be
-triggered manually from the Actions tab (`workflow_dispatch`).
 
 ## Content Source and Provenance
 

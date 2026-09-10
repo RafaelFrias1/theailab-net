@@ -1,24 +1,77 @@
-/* Twenty Nineteen-faithful theme for Programming Humanity
-   Design tokens measured from programminghumanity.wordpress.com (2026-08-25):
-   serif body 22px/1.8, bold sans headings, primary #0073a8, grayscale+blue
-   duotone featured-image headers with bottom-left entry title. */
+/* Phase 2 design pass (2026-09-03): Fraunces/Newsreader/Quicksand type system,
+   warm terracotta accent, and a five-color "kusumi-iro" (muted Japanese
+   pastel) palette for the five course-arc segments (MP1-4 + Final Project).
+   Structural layout inherited from the original Twenty Nineteen-faithful
+   port (narrow reading column, asymmetric left gutter). */
+
+/* Smooth cross-document page transitions (P3-6). Native browser feature —
+   no JS, no SPA routing. Since this stylesheet is shared by every page,
+   the rule is present on both the outgoing and incoming document for any
+   in-site navigation, which is what the spec requires for the transition
+   to fire. Browsers without support (older Safari/Firefox) just navigate
+   normally — this is a pure progressive enhancement. */
+@view-transition {
+  navigation: auto;
+}
 
 :root {
-  --bg: #fff;
-  --text: #111;
-  --text-lt: #767676;
-  --accent: #0073aa;
-  --accent-dk: #005177;
-  --primary: #0073a8;      /* duotone / hero tint */
-  --border: #e0e0e0;
-  --code-bg: #f5f5f5;
-  --draft: #ff9800;
-  --priv: #e91e63;
-  --fh: "NonBreakingSpaceOverride", "Hoefler Text", Garamond, "Times New Roman", serif;
-  --fb: "NonBreakingSpaceOverride", -apple-system, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  --bg: #faf7f2;
+  --surface: #ffffff;
+  --text: #2a2622;
+  --text-lt: #8a8378;
+  --accent: #c2703f;
+  --accent-dk: #a25a30;
+  --border: #e8e2d8;
+  --code-bg: #f3ede3;
+  --mp1: #c3a89f;   /* MP1 - Dev Environment: dusty rose */
+  --mp2: #a3ac93;   /* MP2 - Agent Config: moss */
+  --mp3: #c4ab77;   /* MP3 - Harness & Hooks: mustard */
+  --mp4: #a49cb0;   /* MP4 - SDLC Capstone: dusty violet */
+  --final: #9bb0b5; /* Final Project: dusty teal */
+  --fdisplay: "Fraunces", Georgia, serif;
+  --fh: "Newsreader", "Hoefler Text", Garamond, "Times New Roman", serif;
+  --fb: "Quicksand", -apple-system, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
   --mw: 640px;             /* text column measure */
   --mww: 1168px;
   --col-left: calc(8.33vw + 28px);  /* left offset of the content column */
+  --card-shadow: 0 24px 60px -22px rgba(42, 38, 34, 0.18), 0 3px 16px rgba(42, 38, 34, 0.05);
+  --card-glass-bg: rgba(255, 255, 255, 0.42);
+  --card-glass-border: rgba(255, 255, 255, 0.5);
+  color-scheme: light;
+}
+
+/* Dark mode (P3-1). --bg/--surface are the fixed starting point; every other
+   token is a deliberately separate dark-mode palette (not a mechanical
+   lighten of the light-mode values) — softer text than raw white, and the
+   five arc colors pushed to higher saturation/lightness than their light-mode
+   pastels so they stay individually legible as small dots on a dark card,
+   instead of washing out toward gray. Applied via [data-theme="dark"] on
+   <html>, set by the inline script in each page's <head> before paint — see
+   js/theme.js for the toggle/lock/auto-expiry logic. */
+[data-theme="dark"] {
+  --bg: #1f1a15;
+  --surface: #241f19;
+  --text: #ddd0bd;
+  --text-lt: #8f8272;
+  --accent: #e2853f;
+  --accent-dk: #b8672f;
+  --border: #423a2e;
+  --code-bg: #2b251d;
+  --mp1: #e2a89a;
+  --mp2: #a3c78c;
+  --mp3: #dcb567;
+  --mp4: #b6a3d9;
+  --final: #7ec3c7;
+  --card-shadow: 0 24px 60px -18px rgba(0, 0, 0, 0.55), 0 0 46px rgba(226, 133, 63, 0.07);
+  --card-glass-bg: rgba(36, 31, 25, 0.4);
+  --card-glass-border: rgba(255, 255, 255, 0.08);
+  color-scheme: dark;
+}
+
+body, .site-header, .site-footer, .map-card, .table-wrap table,
+.item-list li, .ethics-thread, a, .theme-toggle, .theme-lock,
+.news-card, .here-card {
+  transition: background-color .2s ease, color .2s ease, border-color .2s ease;
 }
 
 /* Reset */
@@ -31,6 +84,17 @@ body {
   line-height: 1.8;
   color: var(--text);
   background: var(--bg);
+}
+
+/* Homepage-only decorative background flourish (P3-5). The canvas paints
+   the page's visible backdrop, so the homepage body is transparent here —
+   every other page keeps the normal var(--bg) fill. */
+body.has-bg-flourish { background: transparent; overscroll-behavior-y: none; }
+.bg-flourish {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
 }
 
 a {
@@ -49,10 +113,27 @@ img {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--fb);      /* bold sans headings (Twenty Nineteen) */
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-family: var(--fdisplay);
+  font-weight: 600;
+  letter-spacing: -0.01em;
   line-height: 1.2;
+}
+
+/* Skip link (accessibility) */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  z-index: 100;
+  background: var(--accent-dk);
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--fb);
+  font-weight: 700;
+  text-decoration: none;
+}
+.skip-link:focus {
+  top: 0;
 }
 
 /* ===================== */
@@ -64,38 +145,6 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--text);
   background: var(--bg);
   padding: 44px 0 0;
-}
-
-/* --- Featured-image variant: full-viewport duotone hero --- */
-.site-header.has-featured-image {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  color: #fff;
-  background: #000e14;
-  padding: 66px 0 88px;
-  overflow: hidden;
-}
-
-.featured-media {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-.featured-media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: grayscale(100%);
-}
-/* blue duotone: multiply keeps shadows black, tints highlights toward primary */
-.featured-media::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--primary);
-  mix-blend-mode: multiply;
 }
 
 .header-inner {
@@ -115,10 +164,10 @@ h1, h2, h3, h4, h5, h6 {
   column-gap: 0.75rem;
 }
 .site-title {
-  font-family: var(--fb);
+  font-family: var(--fdisplay);
   font-size: 24.75px;
-  font-weight: 400;
-  letter-spacing: -0.02em;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   margin: 0;
   line-height: 1.2;
 }
@@ -172,8 +221,10 @@ h1, h2, h3, h4, h5, h6 {
   text-transform: none;
   padding: 0;
   text-decoration: none;
+  display: inline-block;
+  transform-origin: center bottom;
+  transition: transform 0.12s ease;
 }
-.main-nav li a:hover,
 .main-nav li a.active {
   text-decoration: underline;
   text-decoration-thickness: 2px;
@@ -185,25 +236,66 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--accent);
 }
 
-.social-nav {
-  margin-top: 1.4rem;
+/* Theme toggle / lock (P3-1: dark mode). Fixed to the page's actual
+   top-right corner rather than laid out inside .main-nav — the nav's
+   own measure (--mww) is much wider than the reading column (--mw), so
+   right-aligning inside the flex row would strand the button far past
+   the content, not near it. */
+.theme-controls {
+  position: fixed;
+  top: 1.25rem;
+  right: 1.5rem;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 }
-.social-nav a {
-  color: inherit;
-  font-family: var(--fb);
-  font-size: 16px;
-  text-decoration: none;
+.theme-toggle,
+.theme-lock {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  line-height: 0;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text);
+  cursor: pointer;
 }
-.social-nav a:hover {
-  text-decoration: underline;
+.theme-toggle:hover,
+.theme-lock:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.theme-lock {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+.theme-lock[hidden] {
+  display: none;
+}
+.theme-toggle .icon-moon,
+.theme-toggle.is-dark .icon-sun {
+  display: none;
+}
+.theme-toggle.is-dark .icon-moon {
+  display: inline-block;
+}
+.theme-lock .icon-locked,
+.theme-lock.is-locked .icon-unlocked {
+  display: none;
+}
+.theme-lock.is-locked .icon-locked {
+  display: inline-block;
 }
 
 /* ===================== */
 /*   Hero / entry title  */
 /* ===================== */
 
-/* On featured-image pages the hero sits at the bottom-left of the image;
-   on plain pages it flows in the document with a gray dash. */
 .hero {
   position: relative;
   z-index: 1;
@@ -215,10 +307,10 @@ h1, h2, h3, h4, h5, h6 {
   padding-right: 2rem;
 }
 .hero h1 {
-  font-family: var(--fb);
+  font-family: var(--fdisplay);
   font-size: 49.5px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   line-height: 1.2;
   margin: 0;
   max-width: none;
@@ -229,14 +321,11 @@ h1, h2, h3, h4, h5, h6 {
   width: 2.2em;
   height: 2px;
   margin-bottom: 1rem;
-  background: currentColor;
+  background: var(--text-lt);
 }
-.site-header.no-featured-image .hero {
+.hero {
   margin-top: 4rem;
   margin-bottom: 0.5rem;
-}
-.site-header.no-featured-image .hero h1::before {
-  background: var(--text-lt);
 }
 
 /* ===================== */
@@ -262,83 +351,13 @@ h1, h2, h3, h4, h5, h6 {
   text-decoration-thickness: 1px;
 }
 
-/* Page meta (repo addition — quiet) */
-.page-meta {
-  font-family: var(--fb);
-  font-size: 15px;
-  color: var(--text-lt);
-  margin-bottom: 2rem;
-}
-
-/* Blog entry meta (author / date row) */
-.entry-meta {
-  font-family: var(--fb);
-  font-size: 16px;
-  color: var(--text-lt);
-  margin: 0 0 1.5rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.25rem;
-}
-.entry-meta a { color: var(--accent); }
-
-/* Category footer + prev/next (blog) */
-.entry-footer {
-  font-family: var(--fb);
-  font-size: 16px;
-  color: var(--text-lt);
-  border-top: 1px solid var(--border);
-  margin-top: 3rem;
-  padding-top: 1rem;
-}
-.post-nav {
-  font-family: var(--fb);
-  font-size: 18px;
-  margin-top: 2rem;
-  display: flex;
-  justify-content: space-between;
-  gap: 2rem;
-}
-.share-links {
-  font-family: var(--fb);
-  font-size: 15px;
-  margin-top: 3rem;
-  color: var(--text);
-}
-.share-links > span {
-  display: block;
-  font-weight: 700;
-  font-size: 18px;
-  margin-bottom: 0.6rem;
-}
-.share-links > span::before {
-  content: "";
-  display: block;
-  width: 1em;
-  height: 1px;
-  background: var(--text);
-  margin-bottom: 1rem;
-}
-.share-links a {
-  display: inline-block;
-  margin-right: 0.5rem;
-  padding: 0.2rem 0.8rem;
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  color: var(--text);
-  text-decoration: none;
-}
-.share-links a:hover {
-  border-color: var(--text-lt);
-  color: var(--text);
-}
-
 /* Page content typography */
 .page-content h1,
 .page-content h2,
 .page-content h3,
 .page-content h4 {
-  font-family: var(--fb);
+  font-family: var(--fdisplay);
+  font-weight: 600;
   color: var(--text);
   margin-top: 2rem;
   margin-bottom: 0.8rem;
@@ -351,6 +370,297 @@ h1, h2, h3, h4, h5, h6 {
 
 .page-content p {
   margin: 1.5rem 0;
+}
+
+/* Homepage lead sentence */
+.home-lead {
+  font-family: var(--fdisplay);
+  font-weight: 500;
+  font-size: 27px;
+  line-height: 1.35;
+  margin: 0 0 1.5rem;
+}
+.home-lead-accent {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* Journey map (homepage only) */
+.map-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem 1.5rem 1.25rem;
+  margin: 0 0 2rem;
+}
+/* Homepage only: a soft shadow/glow so cards feel lit from the animated
+   backdrop behind them instead of reading as flat cutouts pasted on top —
+   most noticeable as a hard-edged "two layers" feeling while scrolling. */
+body.has-bg-flourish .map-card,
+body.has-bg-flourish .news-card,
+body.has-bg-flourish .here-card {
+  box-shadow: var(--card-shadow);
+  background: var(--card-glass-bg);
+  border-color: var(--card-glass-border);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+}
+.map-title {
+  font-family: var(--fb);
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-lt);
+  margin-bottom: 0.9rem;
+}
+.map-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.map-svg a circle,
+.map-svg a rect {
+  transition: transform 0.15s ease;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.map-svg a:hover circle,
+.map-svg a:hover rect {
+  transform: scale(1.35);
+}
+.here-ring {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  opacity: 0.9;
+  animation: journey-pulse 2s ease-in-out infinite;
+}
+.here-ring.next {
+  stroke-dasharray: 3 3;
+  animation: none;
+  opacity: 0.7;
+}
+@keyframes journey-pulse {
+  0%, 100% { r: 13; opacity: 0.9; }
+  50% { r: 17; opacity: 0.35; }
+}
+.map-legend {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 0.9rem;
+  font-family: var(--fb);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-lt);
+}
+.map-legend .dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 4px;
+}
+.map-legend .ethics-legend {
+  color: var(--accent);
+}
+.map-schedule-link {
+  display: inline-block;
+  font-family: var(--fb);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-top: 0.6rem;
+  text-decoration: none;
+}
+.map-schedule-link:hover {
+  text-decoration: underline;
+}
+
+/* ===================== */
+/*   Homepage grid + widget rail (P3-3/P3-4)  */
+/* ===================== */
+
+.content-wrapper.is-home {
+  /* +2rem compensates for .content-wrapper's own right padding, so the
+     rendered .home-main/.home-rail split matches the approved 800/360
+     mockup proportions exactly. */
+  max-width: calc(800px + 360px + 3.5rem + 2rem);
+}
+
+.home-grid {
+  display: flex;
+  align-items: flex-start;
+  gap: 3.5rem;
+}
+.home-main {
+  flex: 1 1 480px;
+  max-width: 800px;
+}
+.home-rail {
+  flex: 0 0 360px;
+  position: sticky;
+  top: 1.5rem;
+}
+
+/* Interior-page rail (sits alongside .page-main, inside .content-wrapper.has-rail).
+   Same column split as the homepage's .home-main/.home-rail: rail fixed at
+   360px, main flexes between 480-800px so the rail never gets squeezed at
+   common laptop widths (1150-1400px). */
+.content-wrapper.has-rail {
+  display: flex;
+  align-items: flex-start;
+  gap: 3.5rem;
+  max-width: calc(800px + 360px + 3.5rem + 2rem);
+}
+.content-wrapper.has-rail .page-main {
+  flex: 1 1 480px;
+  max-width: 800px;
+}
+.page-rail {
+  flex: 0 0 360px;
+  position: sticky;
+  top: 1.5rem;
+}
+
+.news-card, .here-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 1.75rem 1.75rem 1.85rem;
+  margin-bottom: 1.5rem;
+}
+.news-card[hidden], .here-card[hidden] { display: none; }
+
+.news-label, .here-label {
+  font-family: var(--fb);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.8rem;
+}
+.news-headline {
+  font-family: var(--fdisplay);
+  font-size: 21px;
+  line-height: 1.42;
+  margin: 0 0 1.1rem;
+  color: var(--text);
+}
+.news-source {
+  font-family: var(--fb);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-lt);
+  margin: 0;
+}
+.news-caption {
+  font-family: var(--fh);
+  font-style: italic;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--text-lt);
+  margin: 1.1rem 0 0;
+}
+
+.here-week {
+  font-family: var(--fdisplay);
+  font-size: 23px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.2rem;
+}
+.here-title {
+  font-family: var(--fh);
+  font-size: 15px;
+  color: var(--text-lt);
+  margin-bottom: 1.2rem;
+}
+.here-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--border);
+  overflow: hidden;
+  margin-bottom: 1.1rem;
+}
+.here-bar-fill {
+  height: 100%;
+  background: var(--mp1);
+  border-radius: 3px;
+}
+.here-link {
+  display: inline-block;
+  font-family: var(--fb);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+}
+.here-link:hover { text-decoration: underline; }
+
+@media (max-width: 1100px) {
+  .content-wrapper.is-home {
+    max-width: calc(var(--mw) + 5rem);
+  }
+  .home-grid {
+    flex-direction: column;
+  }
+  .home-rail { max-width: none; width: 100%; position: static; }
+
+  .content-wrapper.has-rail {
+    flex-direction: column;
+    max-width: calc(var(--mw) + 4rem);
+  }
+  .page-rail { max-width: none; width: 100%; position: static; margin-top: 2rem; }
+}
+
+.session-meta {
+  font-family: var(--fb);
+  font-size: 15px;
+  letter-spacing: 0.03em;
+  color: var(--text-lt);
+  margin: 1.5rem 0;
+}
+.session-meta p {
+  margin: 0.3rem 0;
+}
+.mp-dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  margin-right: 0.4rem;
+  vertical-align: middle;
+}
+.session-meta strong {
+  color: var(--text);
+  font-weight: 700;
+}
+.session-meta a {
+  color: var(--accent);
+}
+
+.ethics-thread {
+  border-left: 3px solid var(--accent);
+  background: var(--code-bg);
+  margin: 1.5rem 0;
+  padding: 1rem 1.25rem;
+  border-radius: 0 8px 8px 0;
+}
+.ethics-thread .ethics-label {
+  display: block;
+  font-family: var(--fb);
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent-dk);
+  margin-bottom: 0.4rem;
+}
+.ethics-thread p {
+  margin: 0;
 }
 
 .page-content blockquote {
@@ -397,10 +707,14 @@ h1, h2, h3, h4, h5, h6 {
   margin-left: 0;
 }
 
+.table-wrap {
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
 .page-content table {
   width: 100%;
   border-collapse: collapse;
-  margin: 1.5rem 0;
+  margin: 0;
   font-size: 0.8em;
   font-family: var(--fb);
 }
@@ -428,77 +742,6 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.6;
 }
 
-/* Blog index: live-style post previews */
-.post-preview {
-  margin-bottom: 3rem;
-}
-.post-preview h2 {
-  font-size: 36px;
-  margin: 0 0 0.25rem;
-}
-.post-preview h2 a {
-  color: var(--text);
-  text-decoration: none;
-}
-.post-preview h2 a:hover {
-  color: var(--accent);
-  text-decoration: underline;
-}
-.post-preview .entry-meta {
-  margin-bottom: 0.75rem;
-}
-.post-preview p {
-  margin: 0;
-}
-.other-blog-pages {
-  border-top: 1px solid var(--border);
-  padding-top: 2rem;
-}
-
-/* ===================== */
-/*   Badges              */
-/* ===================== */
-
-.badge {
-  display: inline-block;
-  font-family: var(--fb);
-  padding: 0.15rem 0.5rem;
-  border-radius: 3px;
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  vertical-align: middle;
-  margin-left: 0.5rem;
-}
-.badge-draft {
-  background: var(--draft);
-  color: #fff;
-}
-.badge-private {
-  background: var(--priv);
-  color: #fff;
-}
-.badge-placeholder {
-  background: #9e9e9e;
-  color: #fff;
-}
-
-/* Placeholder notice */
-.placeholder-notice {
-  font-family: var(--fb);
-  background: #fff3e0;
-  border: 2px dashed var(--draft);
-  padding: 1.5rem;
-  border-radius: 8px;
-  margin: 2rem 0;
-  text-align: center;
-}
-.placeholder-notice h3 {
-  color: var(--draft);
-  margin-top: 0;
-}
-
 /* ===================== */
 /*   Sections & Lists    */
 /* ===================== */
@@ -507,7 +750,8 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 2.5rem;
 }
 .section h2 {
-  font-family: var(--fb);
+  font-family: var(--fdisplay);
+  font-weight: 600;
   color: var(--text);
   font-size: 32px;
 }
@@ -518,30 +762,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 .item-list li {
   padding: 0.5rem 0;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--border);
 }
 .item-list li:last-child {
   border-bottom: none;
-}
-
-.columns {
-  column-count: 2;
-  column-gap: 2rem;
-}
-
-/* ===================== */
-/*   WP Block styles     */
-/* ===================== */
-
-.wp-block-image {
-  margin: 2rem 0;
-}
-.wp-block-separator {
-  border: none;
-  border-top: 2px solid var(--text);
-  width: 2.2em;
-  margin: 2rem 0;
-  margin-left: 0;
 }
 
 /* ===================== */
@@ -580,15 +804,6 @@ h1, h2, h3, h4, h5, h6 {
     --col-left: 1rem;
   }
 
-  /* Live-site mobile behavior: hero collapses to a solid primary block */
-  .site-header.has-featured-image {
-    background: var(--primary);
-    padding: 44px 0 56px;
-  }
-  .featured-media {
-    display: none;
-  }
-
   .site-header {
     padding-top: 32px;
   }
@@ -609,12 +824,24 @@ h1, h2, h3, h4, h5, h6 {
     padding: 2rem 1rem 3rem 0;
   }
 
-  .columns {
-    column-count: 1;
+  .header-inner {
+    padding-right: 4.5rem;
   }
 
-  .post-nav {
-    flex-direction: column;
-    gap: 0.5rem;
+  .theme-controls {
+    top: 0.85rem;
+    right: 0.85rem;
+    gap: 0.3rem;
+  }
+
+  .theme-toggle,
+  .theme-lock {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .theme-lock {
+    width: 1.4rem;
+    height: 1.4rem;
   }
 }
