@@ -4,6 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1.0" name="viewport"/>
+<script>try{var t=localStorage.getItem("theme");document.documentElement.setAttribute("data-theme",t==="light"?"light":"dark");}catch(e){document.documentElement.setAttribute("data-theme","dark");}</script>
 <meta name="description" content="IPHS 400: Frontiers in AI at Kenyon College — a hands-on course in AI software engineering, built around four stacking mini-projects and a research capstone."/>
 <title>Home – IPHS 400: Frontiers in AI</title>
 <link href="css/style.css" rel="stylesheet"/>
@@ -36,12 +37,31 @@
 <li><a href="core/policies.html">Policies</a></li>
 <li><a href="core/about.html">About</a></li>
 </ul></nav>
+<button type="button" class="theme-toggle" aria-pressed="true" aria-label="Switch to light theme" title="Switch to light theme">
+<svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"></path></svg>
+<svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+</button>
+</div>
+<div class="up-next" hidden>
+<span class="up-next-label">Up next</span>
+<a class="up-next-body" href="core/assignments.html"></a>
 </div>
 <section class="hero"><h1>Home</h1></section></header>
 
+<script type="application/json" id="assignments-data">
+[
+{"key":"mp1","tag":"MP1","name":"Redesigning a Website","due":"2026-09-10"},
+{"key":"mp2","tag":"MP2","name":"AI Coding Agent Configuration","due":"2026-09-25"},
+{"key":"mp3","tag":"MP3","name":"Agent Harness and Hooks","due":"2026-10-23","note":"demos Tuesday, October 27"},
+{"key":"final-proposal","tag":"Proposal","name":"Final Project proposal","due":"2026-11-13"},
+{"key":"mp4","tag":"MP4","name":"SWE/SDLC Best Practices Capstone","due":"2026-11-20","note":"presentations November 17 & 19"},
+{"key":"final","tag":"Final","name":"Final Project — poster, code, and release form","due":"2026-12-18","dueText":"the exam period (December 14–18)"}
+]
+</script>
+
 <main id="main-content" class="content-wrapper">
 <div class="page-content">
-<p>Welcome to <strong>IPHS 400: Frontiers in AI</strong> at Kenyon College. This upper-division course is a hands-on study of the AI frontier as it stands in late 2026: <strong>AI software engineering (AI-SWE)</strong>, coordinating autonomous coding agents through a professional software development lifecycle. You build this competency through four mini-projects that stack on each other — your own development environment, agent configuration and custom Skills, agent harness/hook engineering, and a spec-driven SDLC capstone — before applying the whole toolchain to an original interdisciplinary research project.</p>
+<p>Welcome to <strong>IPHS 400: Frontiers in AI</strong> at Kenyon College. This upper-division course is a hands-on study of the AI frontier as it stands in late 2026: <strong>AI software engineering (AI-SWE)</strong>, coordinating autonomous coding agents through a professional software development lifecycle. You build this competency through four mini-projects that stack on each other — redesigning a website with an AI agent, agent configuration and custom Skills, agent harness/hook engineering, and a spec-driven SDLC capstone — before applying the whole toolchain to an original interdisciplinary research project.</p>
 
 <h2>Course Details</h2>
 <table>
@@ -66,5 +86,6 @@
 <p>IPHS 400: Frontiers in AI · Kenyon College</p>
 <p class="footer-links"><a href="https://github.com/jon-chun/theailab-net" rel="noopener noreferrer">Source</a> · <a href="https://github.com/jon-chun/theailab-net/blob/main/LICENSE" rel="noopener noreferrer">License</a></p>
 </footer>
+<script src="assets/js/site.js"></script>
 </body>
 </html>

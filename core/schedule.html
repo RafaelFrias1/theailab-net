@@ -4,6 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1.0" name="viewport"/>
+<script>try{var t=localStorage.getItem("theme");document.documentElement.setAttribute("data-theme",t==="light"?"light":"dark");}catch(e){document.documentElement.setAttribute("data-theme","dark");}</script>
 <meta name="description" content="Week-by-week schedule for IPHS 400: Frontiers in AI, mapping all 15 weeks onto the four mini-projects and the final interdisciplinary research project."/>
 <title>Schedule – IPHS 400: Frontiers in AI</title>
 <link href="../css/style.css" rel="stylesheet"/>
@@ -22,6 +23,10 @@
 <li><a href="policies.html">Policies</a></li>
 <li><a href="about.html">About</a></li>
 </ul></nav>
+<button type="button" class="theme-toggle" aria-pressed="true" aria-label="Switch to light theme" title="Switch to light theme">
+<svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"></path></svg>
+<svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+</button>
 </div>
 <section class="hero"><h1>Schedule</h1></section></header>
 
@@ -33,47 +38,47 @@
 <p>Key dates per the Kenyon College Academic Calendar 2026–27: classes begin Thursday, August 27; October Break Thursday–Friday, October 8–9; Thanksgiving recess Saturday, November 21 – Sunday, November 29; last day of classes Friday, December 11; final examination period Monday–Friday, December 14–18; semester ends 4:30 PM Friday, December 18, 2026. Week 1 has a single session (Thursday) and Week 7 has a single session (Tuesday) because of October Break.</p>
 
 <div class="section">
-<h2>Weeks 1-2: Mini-Project 1 — Development Environment Configuration</h2>
+<h2>Weeks 1-2: Mini-Project 1 — Redesigning a Website</h2>
 <ul class="item-list">
-<li><a href="../weeks/week-01.html">Week 1: Course Introduction</a></li>
-<li><a href="../weeks/week-02.html">Week 2: Shell Fundamentals and Dotfiles</a></li>
+<li data-week="1" data-first="2026-08-27"><a href="../weeks/week-01.html">Week 1: Course Introduction</a></li>
+<li data-week="2" data-first="2026-09-01"><a href="../weeks/week-02.html">Week 2: Shell Fundamentals and Dotfiles</a></li>
 </ul>
 </div>
 
 <div class="section">
 <h2>Weeks 3-5: Mini-Project 2 — AI Coding Agent Configuration</h2>
 <ul class="item-list">
-<li><a href="../weeks/week-03.html">Week 3: Anatomy of an AI Coding Agent</a></li>
-<li><a href="../weeks/week-04.html">Week 4: CLAUDE.md and Slash Commands</a></li>
-<li><a href="../weeks/week-05.html">Week 5: Agent Skills, Subagents, and MCP</a></li>
+<li data-week="3" data-first="2026-09-08"><a href="../weeks/week-03.html">Week 3: Dive into Claude Code CLI</a></li>
+<li data-week="4" data-first="2026-09-15"><a href="../weeks/week-04.html">Week 4: CLAUDE.md and Slash Commands</a></li>
+<li data-week="5" data-first="2026-09-22"><a href="../weeks/week-05.html">Week 5: Agent Skills, Subagents, and MCP</a></li>
 </ul>
 </div>
 
 <div class="section">
 <h2>Weeks 6-9: Mini-Project 3 — Agent Harness and Hooks</h2>
 <ul class="item-list">
-<li><a href="../weeks/week-06.html">Week 6: Hooks Architecture and Guardrails</a></li>
-<li><a href="../weeks/week-07.html">Week 7: Multi-Agent Orchestration Fundamentals</a></li>
-<li><a href="../weeks/week-08.html">Week 8: Comparative Agent Harnesses</a></li>
-<li><a href="../weeks/week-09.html">Week 9: Harness Integration and Debugging</a></li>
+<li data-week="6" data-first="2026-09-29"><a href="../weeks/week-06.html">Week 6: Hooks Architecture and Guardrails</a></li>
+<li data-week="7" data-first="2026-10-06"><a href="../weeks/week-07.html">Week 7: Multi-Agent Orchestration Fundamentals</a></li>
+<li data-week="8" data-first="2026-10-13"><a href="../weeks/week-08.html">Week 8: Comparative Agent Harnesses</a></li>
+<li data-week="9" data-first="2026-10-20"><a href="../weeks/week-09.html">Week 9: Harness Integration and Debugging</a></li>
 </ul>
 </div>
 
 <div class="section">
 <h2>Weeks 10-13: Mini-Project 4 — SWE/SDLC Best Practices Capstone</h2>
 <ul class="item-list">
-<li><a href="../weeks/week-10.html">Week 10: MP3 Demos and the Spec-Driven Development Landscape</a></li>
-<li><a href="../weeks/week-11.html">Week 11: GitHub as the AI-SDLC Hub</a></li>
-<li><a href="../weeks/week-12.html">Week 12: Observability, Cost, and Security</a></li>
-<li><a href="../weeks/week-13.html">Week 13: Full-Cycle Capstone Work Session and MP4 Presentations</a></li>
+<li data-week="10" data-first="2026-10-27"><a href="../weeks/week-10.html">Week 10: MP3 Demos and the Spec-Driven Development Landscape</a></li>
+<li data-week="11" data-first="2026-11-03"><a href="../weeks/week-11.html">Week 11: GitHub as the AI-SDLC Hub</a></li>
+<li data-week="12" data-first="2026-11-10"><a href="../weeks/week-12.html">Week 12: Observability, Cost, and Security</a></li>
+<li data-week="13" data-first="2026-11-17"><a href="../weeks/week-13.html">Week 13: Full-Cycle Capstone Work Session and MP4 Presentations</a></li>
 </ul>
 </div>
 
 <div class="section">
 <h2>Weeks 14-15: Final Project Development and Presentation</h2>
 <ul class="item-list">
-<li><a href="../weeks/week-14.html">Week 14: Final Project Work Session and Poster Development</a></li>
-<li><a href="../weeks/week-15.html">Week 15: Final Project Poster Presentations</a></li>
+<li data-week="14" data-first="2026-12-01"><a href="../weeks/week-14.html">Week 14: Final Project Work Session and Poster Development</a></li>
+<li data-week="15" data-first="2026-12-08"><a href="../weeks/week-15.html">Week 15: Final Project Poster Presentations</a></li>
 </ul>
 </div>
 
@@ -83,5 +88,6 @@
 <p>IPHS 400: Frontiers in AI · Kenyon College</p>
 <p class="footer-links"><a href="https://github.com/jon-chun/theailab-net" rel="noopener noreferrer">Source</a> · <a href="https://github.com/jon-chun/theailab-net/blob/main/LICENSE" rel="noopener noreferrer">License</a></p>
 </footer>
+<script src="../assets/js/site.js"></script>
 </body>
 </html>

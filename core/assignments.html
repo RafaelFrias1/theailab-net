@@ -4,6 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1.0" name="viewport"/>
+<script>try{var t=localStorage.getItem("theme");document.documentElement.setAttribute("data-theme",t==="light"?"light":"dark");}catch(e){document.documentElement.setAttribute("data-theme","dark");}</script>
 <meta name="description" content="Assignments for IPHS 400: Frontiers in AI — the four stacking mini-projects, the final research poster project, assignment weights, and the grading rubric."/>
 <title>Assignments – IPHS 400: Frontiers in AI</title>
 <link href="../css/style.css" rel="stylesheet"/>
@@ -22,6 +23,10 @@
 <li><a href="policies.html">Policies</a></li>
 <li><a href="about.html">About</a></li>
 </ul></nav>
+<button type="button" class="theme-toggle" aria-pressed="true" aria-label="Switch to light theme" title="Switch to light theme">
+<svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"></path></svg>
+<svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+</button>
 </div>
 <section class="hero"><h1>Assignments</h1></section></header>
 
@@ -36,22 +41,22 @@
 <tr><th scope="col">Assignment</th><th scope="col">Weight</th><th scope="col">Due</th></tr>
 <tr><td>Class Participation (incl. attendance and lightning presentation)</td><td>20%</td><td>Ongoing</td></tr>
 <tr><td>Weekly Quizzes (lowest two dropped)</td><td>30%</td><td>Weekly, in class</td></tr>
-<tr><td>Mini-Project 1 — Dev Environment (Pass/No-Pass)</td><td>5%</td><td>Fri, Sep 4</td></tr>
-<tr><td>Mini-Project 2 — Agent + Skills Config (Pass/No-Pass)</td><td>5%</td><td>Fri, Sep 25</td></tr>
-<tr><td>Mini-Project 3 — Harness + Hooks (graded)</td><td>10%</td><td>Fri, Oct 23 (demos Tu, Oct 27)</td></tr>
-<tr><td>Mini-Project 4 — SDLC Capstone (graded)</td><td>10%</td><td>Fri, Nov 20 (presentations Nov 17/19)</td></tr>
-<tr><td>Final Project proposal (required, ungraded)</td><td>—</td><td>Fri, Nov 13</td></tr>
+<tr data-assignment="mp1" data-due="2026-09-10"><td>Mini-Project 1 — Website Redesign (Pass/No-Pass)</td><td>5%</td><td>Thu, Sep 10</td></tr>
+<tr data-assignment="mp2" data-due="2026-09-25"><td>Mini-Project 2 — Agent + Skills Config (Pass/No-Pass)</td><td>5%</td><td>Fri, Sep 25</td></tr>
+<tr data-assignment="mp3" data-due="2026-10-23"><td>Mini-Project 3 — Harness + Hooks (graded)</td><td>10%</td><td>Fri, Oct 23 (demos Tu, Oct 27)</td></tr>
+<tr data-assignment="mp4" data-due="2026-11-20"><td>Mini-Project 4 — SDLC Capstone (graded)</td><td>10%</td><td>Fri, Nov 20 (presentations Nov 17/19)</td></tr>
+<tr data-assignment="final-proposal" data-due="2026-11-13"><td>Final Project proposal (required, ungraded)</td><td>—</td><td>Fri, Nov 13</td></tr>
 <tr><td>Written-exam alternative opt-in deadline</td><td>—</td><td>Fri, Nov 13</td></tr>
-<tr><td>Final Project (poster + code + release form)</td><td>20%</td><td>Exam period, Dec 14–18</td></tr>
+<tr data-assignment="final" data-due="2026-12-18"><td>Final Project (poster + code + release form)</td><td>20%</td><td>Exam period, Dec 14–18</td></tr>
 <tr><th scope="row">Total</th><th scope="col">100%</th><td></td></tr>
 </table>
 
 <p>All submissions go through Moodle, with a link to a GitHub repository that is either public or privately shared with the instructor (add the instructor's GitHub account as a collaborator). Repositories must be accessible at the deadline.</p>
 
-<h2>Mini-Project 1 — Development Environment Configuration</h2>
-<p><strong>5%, Pass/No-Pass. Due Friday, September 4.</strong></p>
-<p>Configure a professional shell/terminal environment with documented customizations (e.g., zsh + <code>.zprofile</code>/<code>.zshrc</code>, XDG base directories, a modern CLI toolkit such as <code>ripgrep</code>, <code>fzf</code>, <code>bat</code>, <code>eza</code>, <code>tmux</code>; VS Code with relevant extensions).</p>
-<p><strong>Deliverable:</strong> a GitHub dotfiles repository (public recommended for portfolio value, or privately shared) with a README documenting your configuration choices and rationale, and a <code>.gitignore</code> showing secrets hygiene. Graded pass/no-pass on completeness and documentation quality.</p>
+<h2>Mini-Project 1 — Redesigning a Website</h2>
+<p><strong>5%, Pass/No-Pass. Due Thursday, September 10.</strong></p>
+<p>First, stand up a professional development environment — <code>git</code> and <code>gh</code>, the <code>uv</code> Python manager, the Claude Code CLI, and VS Code — with a GitHub account and sound secrets hygiene from day one. Then put it to work on a real codebase: clone this course's own website, have Claude Code critique it, plan a revision with you, and carry out the changes while keeping the test suite green. You make the judgment calls; the agent does the typing. A self-guided manual walks through every step.</p>
+<p><strong>Deliverable:</strong> a GitHub repository with your working local copy of the site and a documented set of AI-assisted improvements — the critique, the plan, and the changes you made — plus a README recording your process and the decisions you made along the way. Graded pass/no-pass on completeness and documentation quality.</p>
 
 <h2>Mini-Project 2 — AI Coding Agent Configuration</h2>
 <p><strong>5%, Pass/No-Pass. Due Friday, September 25.</strong></p>
@@ -110,5 +115,6 @@
 <p>IPHS 400: Frontiers in AI · Kenyon College</p>
 <p class="footer-links"><a href="https://github.com/jon-chun/theailab-net" rel="noopener noreferrer">Source</a> · <a href="https://github.com/jon-chun/theailab-net/blob/main/LICENSE" rel="noopener noreferrer">License</a></p>
 </footer>
+<script src="../assets/js/site.js"></script>
 </body>
 </html>

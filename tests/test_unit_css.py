@@ -17,6 +17,9 @@ ALLOW = {
     "no-featured-image",  # header modifier, always present
     "footer-links",  # added by the footer-links task; harmless if a page lacks it
     "page-meta",     # "Last updated" row; only on syllabus/schedule
+    "is-current-week",  # added at runtime by assets/js/site.js on schedule.html
+    "week-tag",         # "This week" pill injected by assets/js/site.js
+    "up-next-tag",      # assignment code pill injected by assets/js/site.js
 }
 
 
@@ -54,7 +57,9 @@ def test_has_focus_visible_and_print_rules():
     assert "@media print" in text, "no print stylesheet"
 
 
-def test_stylesheet_shrank_below_450_lines():
-    """Guard against the WordPress blog machinery creeping back in."""
+def test_stylesheet_stays_within_budget():
+    """Guard against bloat creeping back in. The 2026-09-09 redesign (token
+    sets, components, sticky bar) legitimately grew the sheet past the old
+    450-line cap; 800 still catches the WordPress blog machinery returning."""
     n = len(CSS.read_text().splitlines())
-    assert n < 450, f"style.css is {n} lines; expected the trimmed sheet"
+    assert n < 800, f"style.css is {n} lines; expected a lean single sheet"
